@@ -67,6 +67,7 @@ public class GameFrame extends JPanel {
                 levelX.setEndPointX(endPoint);
                 levelX.setStartPointX(startPoint);
                 setActive(false);
+                end = true;
                 pauseMenuScreen = new PauseMenuScreen(levelX, leMenu, this, window);
                 this.setLayout(new BorderLayout());
                 this.add(pauseMenuScreen);
@@ -453,8 +454,5 @@ public class GameFrame extends JPanel {
             c.setActive(newActive);
         for (PenGoalPole p : penGoalPoles)
             p.setActive(newActive);
-    }
-    public void setEnd(boolean newEnd){
-        end = newEnd;
     }
 }
