@@ -24,7 +24,6 @@ public class Mario implements needLandAble{
     private int width = 30;
     private int height = 30;
     private boolean heJumps = false;
-    private ArrayList<fireBall> fireBalls = new ArrayList<>();
     public enum options{NORMAL,BigBody}
     private options status;
     private boolean touchGround = false;
@@ -197,10 +196,6 @@ public class Mario implements needLandAble{
     }
     public Rectangle body(){
         return new Rectangle(x,y,width,height);
-    }
-    public void shoot(){
-        fireBalls.add(new fireBall(Math.min(x , Window.WIDTH / 2),y));
-        fireBalls.getLast().shoot();
     }
     public int getWidth(){
         return width;
