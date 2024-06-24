@@ -34,7 +34,6 @@ public class GameFrame extends JPanel {
     private Mario mario;
     private final level levelX;
     private final window window;
-    private boolean stop = false;
     private static boolean end = true;
     private static levelsMenu leMenu;
     private Controller controller;
@@ -138,16 +137,15 @@ public class GameFrame extends JPanel {
     public void mainGameLoop(){
         new Thread(() -> {
             while (!mario.isOutOfFrame() &&  mario.getX() < (endPoint-mario.getWidth()) && !end) {
-                if (!stop) {
-                    if (mario.isAlive()) {
-                        updateGameObjects();
-                    }
-                    this.repaint();
-                    try {
-                        Thread.sleep(2);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
+                if (mario.isAlive()) {
+                    updateGameObjects();
+                }
+                this.repaint();
+                try {
+                    Thread.sleep(2);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             setActive(false);
@@ -379,7 +377,7 @@ public class GameFrame extends JPanel {
         boolean inFirstHalf = (mario.getX() - startPoint) <= screenWidth;
         boolean inLastHalf = (endPoint - mario.getX()) <= screenWidth;
 
-        if ((startPoint + distance) <= 0 && (endPoint + distance) >= 0 && !stop) {
+        if ((startPoint + distance) <= 0 && (endPoint + distance) >= 0) {
             if (inLastHalf || inFirstHalf) {
                 if ((mario.getX()  - distance) <= endPoint) {
                     mario.setX(mario.getX() - distance);
@@ -389,7 +387,7 @@ public class GameFrame extends JPanel {
             }
         }
 
-        if (!n && !stop) {
+        if (!n) {
             distance *= 2;
         }
         if ((startPoint + distance) <= 0 && (endPoint - getWidth() + distance) >= 0) {
@@ -435,7 +433,6 @@ public class GameFrame extends JPanel {
         else
             moveImageTimer.start();
         mario.setActive(false);
-        this.stop = !newActive;
         this.controller.setActive(newActive);
         mario.setActive(newActive);
         for (Coin c : coins)
