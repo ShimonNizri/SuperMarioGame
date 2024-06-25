@@ -97,9 +97,6 @@ public class PauseMenuScreen extends JPanel {
             if (SoundManager.isPlayBackGroundMusic()) {
                 SoundManager.loopSound(SoundManager.SoundName.BACKGROUND_LOBBY_MUSIC);
             }
-            //gaFrame.setEnd(true);
-            gaFrame = null;
-            level = null;
             leMenu.removePanelMakeSureToStart();
             window.switchPanel(leMenu);
         });
@@ -113,7 +110,6 @@ public class PauseMenuScreen extends JPanel {
         retryLevelButton.setIcon(new ImageIcon(resizedretryLevelImage));
 
         retryLevelButton.addActionListener(event -> {
-            //gaFrame.setEnd(true);
             level = gameScreens.levelsMenu.resetLevel(levelCurrent);
             gaFrame = new GameFrame(level,levelsMenu,window);
             window.switchPanel(gaFrame);
@@ -128,7 +124,6 @@ public class PauseMenuScreen extends JPanel {
         continueButton.setIcon(new ImageIcon(resizedContinueImage));
 
         continueButton.addActionListener(event -> {
-            //gaFrame.setEnd(true);
             gaFrame = new GameFrame(level,levelsMenu,window);
             window.switchPanel(gaFrame);
         });

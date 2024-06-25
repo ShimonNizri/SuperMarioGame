@@ -47,7 +47,6 @@ public class endLevelScreen extends JPanel {
         levelsButton.setFocusPainted(false);
         levelsButton.setIcon(new ImageIcon(resizedLevelsImage));
         levelsButton.addActionListener(event -> {
-            gaFrame = null;
             leMenu.removePanelMakeSureToStart();
             window.switchPanel(leMenu);
         });

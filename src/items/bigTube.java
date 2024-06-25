@@ -62,11 +62,6 @@ public class bigTube implements groundAble{
         return rectangle;
 
     }
-    public void takeDown(){
-        if (carnivorousPlant != null){
-            carnivorousPlant.setY(y+y/50);
-        }
-    }
     public type getStatus(){
         return status;
     }

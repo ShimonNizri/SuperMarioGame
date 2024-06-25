@@ -17,6 +17,7 @@ public class GameFrame extends JPanel {
     private int imageX = 0;
     private int startPoint;
     private int endPoint;
+    private boolean active = false;
     private ArrayList<enemyAble> enemyAbles = new ArrayList<>();
     private ArrayList<groundAble> groundAbles = new ArrayList<>();
     private ArrayList<needLandAble> needLandAbles = new ArrayList<>();
@@ -34,7 +35,6 @@ public class GameFrame extends JPanel {
     private Mario mario;
     private final level levelX;
     private final window window;
-    private static boolean end = true;
     private static levelsMenu leMenu;
     private Controller controller;
     private static PauseMenuScreen pauseMenuScreen;
@@ -42,7 +42,6 @@ public class GameFrame extends JPanel {
     private Timer moveImageTimer;
 
     public GameFrame(level level,levelsMenu levelsMenu, window window) {
-        end = false;
         if (SoundManager.isPlayBackGroundMusic())
             SoundManager.loopSound(SoundManager.SoundName.BACKGROUND_GAME_MUSIC);
         Image resizedPauseImage = pauseButtonImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -66,7 +65,6 @@ public class GameFrame extends JPanel {
                 levelX.setEndPointX(endPoint);
                 levelX.setStartPointX(startPoint);
                 setActive(false);
-                end = true;
                 pauseMenuScreen = new PauseMenuScreen(levelX, leMenu, this, window);
                 this.setLayout(new BorderLayout());
                 this.add(pauseMenuScreen);
@@ -136,8 +134,7 @@ public class GameFrame extends JPanel {
     }
     public void mainGameLoop(){
         new Thread(() -> {
-            while (!mario.isOutOfFrame() &&  mario.getX() < (endPoint-mario.getWidth()) && !end) {
-
+            while (!mario.isOutOfFrame() &&  mario.getX() < (endPoint-mario.getWidth()) && active) {
                 if (mario.isAlive()) {
                     updateGameObjects();
                 }
@@ -148,8 +145,8 @@ public class GameFrame extends JPanel {
                     e.printStackTrace();
                 }
             }
-            setActive(false);
-            if (!end) {
+            if (active){
+                setActive(false);
                 SoundManager.stopSound(SoundManager.SoundName.BACKGROUND_GAME_MUSIC);
                 endLevelScreen = new endLevelScreen((mario.isAlive() && collectedCoins >= levelX.getCoinsRequired() ? gameScreens.endLevelScreen.Status.PASS : gameScreens.endLevelScreen.Status.FAIL), leMenu, levelX, this, window);
                 window.switchPanel(endLevelScreen);
@@ -273,12 +270,6 @@ public class GameFrame extends JPanel {
                                 b.StopsBullet();
                                 break;
                             }
-                    }else {
-                        for (bigTube b : bigTubes)
-                            if (b.getCarnivorousPlant() == enemyAbles.get(i)){
-                                b.takeDown();
-                                break;
-                            }
                     }
                 }
             }
@@ -371,23 +362,25 @@ public class GameFrame extends JPanel {
     }
 
     public void moveScreen(int distance) {
-        boolean n = false;
-        boolean j = false;
-        int screenWidth = getWidth();
+        boolean marioMoves = false;
+        boolean screenMoves = false;
+        int screenWidth = window.getWidth();
         boolean inFirstHalf = (mario.getX() - startPoint) <= screenWidth;
         boolean inLastHalf = (endPoint - mario.getX()) <= screenWidth;
 
+
         if ((startPoint + distance) <= 0 && (endPoint + distance) >= 0) {
             if (inLastHalf || inFirstHalf) {
-                if ((mario.getX()  - distance) <= endPoint) {
+                if ((mario.getX() - distance) <= endPoint) {
                     mario.setX(mario.getX() - distance);
-                    n = true;
-                    j = true;
+                    marioMoves = true;
+                    screenMoves = true;
                 }
             }
         }
 
-        if (!n) {
+
+        if (!marioMoves) {
             distance *= 2;
         }
         if ((startPoint + distance) <= 0 && (endPoint - getWidth() + distance) >= 0) {
@@ -420,9 +413,9 @@ public class GameFrame extends JPanel {
                 p.setX(p.getX() + distance);
             for (castle c : castles)
                 c.setX(c.getX() + distance);
-            j = true;
+            screenMoves = true;
         }
-        if (j) {
+        if (screenMoves) {
             startPoint += distance;
             endPoint += distance;
         }
@@ -451,5 +444,6 @@ public class GameFrame extends JPanel {
             c.setActive(newActive);
         for (PenGoalPole p : penGoalPoles)
             p.setActive(newActive);
+        this.active = newActive;
     }
 }
