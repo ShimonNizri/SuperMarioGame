@@ -420,7 +420,7 @@ public class GameFrame extends JPanel {
             endPoint += distance;
         }
     }
-    public void setActive(boolean newActive){
+    public synchronized void setActive(boolean newActive){
         if (newActive)
             moveImageTimer.start();
         else
