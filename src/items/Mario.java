@@ -175,6 +175,7 @@ public class Mario implements needLandAble{
     public boolean isCanGoLeft(){
         return CanGoLeft;
     }
+
     public void LandUpdate(){
         boolean k = false;
         while (isAlive() && active){

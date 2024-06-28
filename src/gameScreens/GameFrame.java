@@ -140,7 +140,7 @@ public class GameFrame extends JPanel {
                 }
                 this.repaint();
                 try {
-                    Thread.sleep(2);
+                    Thread.sleep(5);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

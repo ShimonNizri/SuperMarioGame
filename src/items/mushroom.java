@@ -36,14 +36,14 @@ public class mushroom implements needLandAble {
     }
     @Override
     public void LandUpdate() {
-        while (active){
+        while (active) {
             if (y < Ground) {
                 y++;
             }
-        }
-        try {
-            Thread.sleep(2);
-        } catch (Exception e) {
+            try {
+                Thread.sleep(2);
+            } catch (Exception e) {
+            }
         }
     }
 
